@@ -18,7 +18,7 @@
 //Séquence de tests pour la classe Camera
 //#define C1_CameraConstructeur
 //#define C2_CameraInfoSuivante
-//#define C3_CameraFacteurCompression
+#define C3_CameraFacteurCompression
 //#define C4_CameraCarteMemoire
 //#define C5_CameraPhotoCourante
 //#define C6_CameraTaillePhoto
