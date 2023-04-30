@@ -1,9 +1,9 @@
 ﻿// Séquence de tests pour la classe Photo
-#define A1_PhotoConstructeur4P
-#define A2_PhotoConstructeur4P
-#define A3_PhotoConstructeur1P
-#define A4_PhotoTailleEnOctets
-#define A5_PhotoToString
+//#define A1_PhotoConstructeur4P
+//#define A2_PhotoConstructeur4P
+//#define A3_PhotoConstructeur1P
+//#define A4_PhotoTailleEnOctets
+//#define A5_PhotoToString
 
 //Séquence de tests pour la classe CarteMemoire
 //#define B1_CarteMemConstructeur
