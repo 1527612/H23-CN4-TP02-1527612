@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using System.Text;
@@ -57,7 +58,21 @@ namespace TestAppCamera
             set { m_flash = value; }
         }
 
-        public IPhoto PhotoCourante => throw new NotImplementedException();
+        public IPhoto PhotoCourante
+        {
+
+            get {
+                if (m_posPhotoCourante == -1 || m_objCarteMemoireCourante ==null)
+                { return null; }
+                
+                else
+                {
+                    return m_objCarteMemoireCourante.PhotoAt(m_posPhotoCourante);
+                        
+                }
+            }
+
+        }
 
         public enuDimension Dimension
         {
@@ -66,7 +81,11 @@ namespace TestAppCamera
             set { m_dimension = value; } 
         }
 
-        public int PosPhotoCourante => throw new NotImplementedException();
+        public int PosPhotoCourante 
+        {
+            get { return m_posPhotoCourante;}
+        
+        }
 
         public enuQualite Qualite 
         { 
@@ -76,10 +95,27 @@ namespace TestAppCamera
         
         }
 
-        public long TailleEnOctetsEstimee => throw new NotImplementedException();
+        public long TailleEnOctetsEstimee 
+        {
+            get 
+            {
+                Size size=TailleEnPixelsSelonDimension;
+                return (size.Height * size.Width * Photo.TAILLE_PIXEL) / FacteurCompression;
+            }
+        
+        }
 
-        public Size TailleEnPixelsSelonDimension => throw new NotImplementedException();
+        public Size TailleEnPixelsSelonDimension
+        {
 
+
+            get
+            {
+                int[] larguer = new int[] { 4000, 3840, 3000, 1600, 640 };
+                int[] hauteur = new int[] { 3000, 2160, 2000, 1200, 480 };
+                return new Size(larguer[(int)m_dimension], hauteur[(int)m_dimension]);
+            }
+        }
         public enuSensibilite Sensibilite 
         {
             get { return m_sensibilite; } 
@@ -88,22 +124,59 @@ namespace TestAppCamera
 
         public void ChargerParametres()
         {
-            throw new NotImplementedException();
+            StreamReader objfischier = new StreamReader(NOM_FICHIER_PARAMETRES);
+
+            while (!objfischier.EndOfStream)
+            {
+                
+                m_dimension=(enuDimension)Enum.Parse(typeof(enuDimension),objfischier.ReadLine());
+                m_qualite = (enuQualite)Enum.Parse(typeof(enuQualite), objfischier.ReadLine());
+                m_sensibilite= (enuSensibilite)Enum.Parse(typeof(enuSensibilite), objfischier.ReadLine());
+                m_flash= (enuFlash)Enum.Parse(typeof(enuFlash), objfischier.ReadLine());
+            }
+
+
+            objfischier.Close();
         }
 
         public void DimensionSuivante()
-        {
-            throw new NotImplementedException();
+        {   if((int)m_dimension == 4)
+            { 
+                m_dimension = (enuDimension)0; 
+            }
+            else
+            { 
+            
+                m_dimension++;
+            }
+                    
         }
 
         public void EjecterCarteMemoire()
         {
-            throw new NotImplementedException();
+            if (m_objCarteMemoireCourante == null)
+            {
+                throw new InvalidOperationException(ERR_MSG_CARTE_MANQUANTE);
+
+            }
+            else
+            {
+
+                m_objCarteMemoireCourante.EnregistrerPhotos();
+                m_objCarteMemoireCourante = null;
+                m_posPhotoCourante = -1;
+
+            }
         }
 
         public void EnregistrerParametres()
         {
-            throw new NotImplementedException();
+            StreamWriter obj = new StreamWriter(NOM_FICHIER_PARAMETRES);
+            obj.WriteLine(m_dimension);
+            obj.WriteLine(m_qualite);
+            obj.WriteLine(m_sensibilite);
+            obj.WriteLine(m_flash);
+            obj.Close(); 
         }
 
         public void InsererCarteMemoire(ICarteMemoire pCarteMemoire)
@@ -133,12 +206,28 @@ namespace TestAppCamera
 
         public void QualiteSuivante()
         {
-            throw new NotImplementedException();
+            if ((int)m_qualite == 3)
+            {
+                m_qualite = (enuQualite)0;
+            }
+            else
+            {
+
+                m_qualite++;
+            }
         }
 
         public void SensibiliteSuivante()
         {
-            throw new NotImplementedException();
+            if ((int)m_sensibilite == 4)
+            {
+                m_sensibilite = (enuSensibilite)0;
+            }
+            else
+            {
+
+                m_sensibilite++;
+            }
         }
 
         public void SupprimerPhotoCourante()
