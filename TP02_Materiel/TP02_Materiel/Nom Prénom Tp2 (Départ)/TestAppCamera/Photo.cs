@@ -62,7 +62,7 @@ namespace TestAppCamera
         public override string ToString()
         {
 
-            return m_tailleEnPixels.Width+","+m_tailleEnPixels.Height+","+m_flash+","+m_sensibilite+","+m_facteurCompression+","+m_date.ToString("yyyy-MM-dd HH:mm:ss");
+            return m_tailleEnPixels.Width+","+m_tailleEnPixels.Height+","+(int)m_flash+","+(int)m_sensibilite+","+m_facteurCompression+","+m_date.ToString("yyyy-MM-dd HH:mm:ss");
 
         }
         public DateTime Date

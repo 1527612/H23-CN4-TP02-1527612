@@ -55,11 +55,11 @@ namespace TestAppCamera
             if(escpaeR >=pobjPhoto.TailleEnOctets)
             {
                 m_colPhotos.Add(pobjPhoto);
-                m_espaceUtilisé=+pobjPhoto.TailleEnOctets;
+                m_espaceUtilisé+=pobjPhoto.TailleEnOctets;
             }
             else
             {
-                throw new InvalidOperationException();
+                throw new InvalidOperationException(ERR_MSG_ESPACE_INSUFFISANT);
             }
         }
 
@@ -72,7 +72,7 @@ namespace TestAppCamera
                 Photo x = new Photo(objfischier.ReadLine());
 
                 m_colPhotos.Add(x);
-                m_espaceUtilisé = +x.TailleEnOctets;
+                m_espaceUtilisé +=x.TailleEnOctets;
             }
             
           
@@ -111,7 +111,7 @@ namespace TestAppCamera
                     
                         
             }
-            else { return false; }
+            else { throw new InvalidOperationException(); }
         }
 
         public IPhoto PhotoAt(int pPosition)

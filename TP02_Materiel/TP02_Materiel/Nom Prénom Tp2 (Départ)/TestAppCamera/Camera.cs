@@ -181,27 +181,123 @@ namespace TestAppCamera
 
         public void InsererCarteMemoire(ICarteMemoire pCarteMemoire)
         {
-            throw new NotImplementedException();
+            if(pCarteMemoire==null)
+            {
+                throw new ArgumentNullException(ERR_MSG_CARTE_MANQUANTE);
+            }
+            if(m_objCarteMemoireCourante!=null)
+            {
+                throw new InvalidOperationException(ERR_MSG_CARTE_PRÉSENTE);
+            }
+            else
+            {
+                 m_objCarteMemoireCourante=pCarteMemoire ;
+                m_posPhotoCourante =0;
+            }
         }
 
         public bool PeutPrendreUnePhoto()
         {
-            throw new NotImplementedException();
+            Photo photo = new Photo(TailleEnPixelsSelonDimension,FacteurCompression,Sensibilite,Flash);
+            return m_objCarteMemoireCourante.PeutAjouter(photo);
+            
         }
 
         public void PhotoPrecedente()
         {
-            throw new NotImplementedException();
+            if(m_objCarteMemoireCourante!=null)
+            {
+                if (m_objCarteMemoireCourante.NbPhotos != 0)
+                { 
+                
+                    if(m_posPhotoCourante!=0)
+                    {
+                    m_posPhotoCourante--;
+                    }
+                    else
+                    {
+                    m_posPhotoCourante = m_objCarteMemoireCourante.NbPhotos-1;
+                    }
+                
+                
+                }
+                else
+                {
+                    throw new InvalidOperationException(ERR_MSG_CARTE_VIDE);
+
+                }
+
+
+            }
+
+            else 
+            {
+                throw new InvalidOperationException(ERR_MSG_CARTE_MANQUANTE);
+            
+            }
         }
 
         public void PhotoSuivante()
         {
-            throw new NotImplementedException();
+            if (m_objCarteMemoireCourante != null)
+            {
+                if (m_objCarteMemoireCourante.NbPhotos != 0)
+                {
+
+                    if (m_posPhotoCourante != m_objCarteMemoireCourante.NbPhotos - 1)
+                    {
+                        m_posPhotoCourante++;
+                    }
+                    else
+                    {
+                        m_posPhotoCourante = 0;
+                    }
+
+
+                }
+                else
+                {
+                    throw new InvalidOperationException(ERR_MSG_CARTE_VIDE);
+
+                }
+
+
+            }
+
+            else
+            {
+                throw new InvalidOperationException(ERR_MSG_CARTE_MANQUANTE);
+
+            }
         }
 
         public void PrendrePhoto()
         {
-            throw new NotImplementedException();
+            Photo photo = new Photo(TailleEnPixelsSelonDimension, FacteurCompression, Sensibilite, Flash);
+           
+            if (m_objCarteMemoireCourante != null)
+            {
+
+                if (PeutPrendreUnePhoto())
+                {
+                    m_objCarteMemoireCourante.Ajouter(photo);
+                }
+
+
+                else
+                {
+                    throw new InvalidOperationException(CarteMemoire.ERR_MSG_ESPACE_INSUFFISANT);
+
+                }
+
+
+            }
+
+            else
+            {
+                throw new InvalidOperationException(ERR_MSG_CARTE_MANQUANTE);
+
+            }
         }
 
         public void QualiteSuivante()
@@ -232,12 +328,48 @@ namespace TestAppCamera
 
         public void SupprimerPhotoCourante()
         {
-            throw new NotImplementedException();
+            if (m_objCarteMemoireCourante != null)
+            {
+
+                if (m_objCarteMemoireCourante.NbPhotos!=0)
+                {
+                    m_objCarteMemoireCourante.SupprimerAt(PosPhotoCourante);
+                    m_posPhotoCourante--;
+                }
+
+
+                else
+                {
+                    throw new InvalidOperationException(ERR_MSG_CARTE_VIDE);
+
+                }
+
+
+            }
+
+            else
+            {
+                throw new InvalidOperationException(ERR_MSG_CARTE_MANQUANTE);
+
+            }
         }
 
         public void ViderLaCarte()
         {
-            throw new NotImplementedException();
+            if (m_objCarteMemoireCourante != null)
+            {
+
+                m_objCarteMemoireCourante.Vider();
+                m_posPhotoCourante = 0;
+
+
+            }
+
+            else
+            {
+                throw new InvalidOperationException(ERR_MSG_CARTE_MANQUANTE);
+
+            }
         }
     }
 }
